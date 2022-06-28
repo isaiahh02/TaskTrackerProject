@@ -1,0 +1,111 @@
+<!doctype html>
+<head>
+<style>
+    #div-app{
+        color:red;
+    }
+    li{
+        color:blue;
+    }
+
+
+</style>
+</head>
+<body>
+    
+<div id="div-app">
+<input type="text" id="txt-task">
+<button id="btn-add">Add Task</button>
+<button id="btn-save">Save List</button>
+<button id="btn-clear">Clear List</button>
+
+<section class="class-section" id="section-tasks"></section>
+
+</div>
+<script>
+    window.onload = function(){
+        document.getElementById("section-tasks").innerHTML = localStorage.getItem("ListStore");
+        attachItemClicks();
+    }
+
+    // grabbing a reference to our elements in the page
+    const btnClear = document.getElementById("btn-clear");
+    const divApp = document.getElementById("div-app");
+    const btnAdd = document.getElementById("btn-add");
+    const btnSave = document.getElementById("btn-save");
+    const sectionTasks = document.getElementById("section-tasks");
+
+    txtTask = document.getElementById("txt-task");
+    taskName = txtTask.value;
+   
+// event handlers
+// button press event handler
+function attachItemClicks(){
+    var editButtons = document.getElementsByClassName("btn-edit");
+    for(let i = 0; i < editButtons.length; i++)
+           
+    editButtons[i].onclick = function(){
+            this.previousSibling.removeAttribute("readonly");
+            
+           
+    }
+    
+}
+
+
+   btnAdd.onclick = function(){
+       
+       var taskName = txtTask.value;
+       sectionTasks.innerHTML += `<input type="text" readonly value="${taskName}"><button class="btn-edit">Edit</button><br />`;
+       var listContent = sectionTasks.innerHTML;
+       listStore = localStorage.setItem("ListStore",listContent);
+       console.log("liststore:" + listStore);
+       attachItemClicks();
+       //console.log(taskName); 
+
+   }
+/*
+function attachItemClicks(){
+    var items = document.getElementsByTagName("li");
+    for(let i=0;i<items.length;i++){
+        items[i].onclick=function(){
+            editItem(this);
+            var itemText = this.innerText;
+            this.innerHTML = `<input type="text" value="${itemText}">`;
+            //
+            var itemText = this.innerText;
+            var thisLi = this;
+            console.log(thisLi.innerText);
+            this.innerText       = "static";
+            console.log(itemText);
+            this.innerHTML = `<input type="text" value="${itemText}">`
+            //
+        }
+    }
+}   
+*/
+
+
+function editItem(item){
+    console.log(item.innerHTML);
+}
+
+btnSave.onclick = function(){
+    var listContent = sectionTasks.outerHTML;
+    console.log("Output listContent: " + listContent);
+    listStore = localStorage.setItem("ListStore",listContent);
+}
+
+   btnClear.onclick = function(){
+    document.getElementById("section-tasks").innerHTML = ""; 
+    localStorage.setItem("ListStore","");
+     
+
+   }
+
+   
+</script>
+
+<!--<script src="script.js"></script>-->
+</body>
+</html>
